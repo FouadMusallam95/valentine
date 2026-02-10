@@ -18,6 +18,7 @@
     .container {
       text-align: center;
       position: relative;
+      z-index: 2;
     }
 
     h1 {
@@ -27,33 +28,35 @@
     }
 
     button {
-      padding: 15px 30px;
-      font-size: 18px;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       cursor: pointer;
       position: absolute;
-      transition: all 0.3s ease;
+      transition: all 0.15s ease;
     }
 
     #yesBtn {
       position: static;
       background-color: #ff4d6d;
       color: white;
-      margin-right: 20px;
+      font-size: 32px;
+      padding: 25px 60px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
     }
 
     #noBtn {
       background-color: #444;
       color: white;
+      font-size: 16px;
+      padding: 12px 20px;
       left: 60%;
       top: 60%;
     }
 
     .buttons {
       position: relative;
-      width: 300px;
-      height: 200px;
+      width: 400px;
+      height: 250px;
       margin: auto;
     }
 
@@ -62,22 +65,57 @@
       color: white;
       margin-top: 20px;
     }
+
+    #dogGif {
+      margin-top: 20px;
+      display: none;
+      width: 250px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    /* Floating hearts */
+    .heart {
+      position: fixed;
+      bottom: -20px;
+      color: rgba(255, 77, 109, 0.8);
+      font-size: 20px;
+      animation: floatUp linear forwards;
+      z-index: 1;
+    }
+
+    @keyframes floatUp {
+      from {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+      to {
+        transform: translateY(-110vh) scale(1.5);
+        opacity: 0;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Would you be my Valentine? ❤️</h1>
     <div class="buttons">
-      <button id="yesBtn">Yes</button>
+      <button id="yesBtn">YES ❤️</button>
       <button id="noBtn">No</button>
     </div>
     <div id="message"></div>
+    <img
+      id="dogGif"
+      src="https://media.giphy.com/media/4Zo41lhzKt6iZ8xff9/giphy.gif"
+      alt="Happy dog"
+    />
   </div>
 
   <script>
     const noBtn = document.getElementById("noBtn");
     const yesBtn = document.getElementById("yesBtn");
     const message = document.getElementById("message");
+    const dogGif = document.getElementById("dogGif");
 
     function moveNoButton() {
       const container = document.querySelector(".buttons");
@@ -91,14 +129,35 @@
       noBtn.style.top = randomY + "px";
     }
 
+    noBtn.addEventListener("mouseenter", moveNoButton);
     noBtn.addEventListener("mouseover", moveNoButton);
     noBtn.addEventListener("click", moveNoButton);
 
     yesBtn.addEventListener("click", () => {
       message.innerHTML = '<div class="success">Yay! ❤️ Can’t wait for our date!</div>';
+      dogGif.style.display = "block";
       noBtn.style.display = "none";
       yesBtn.style.display = "none";
     });
+
+    /* Floating hearts generator */
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.innerHTML = "❤️";
+
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = (15 + Math.random() * 25) + "px";
+      heart.style.animationDuration = (4 + Math.random() * 4) + "s";
+
+      document.body.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 8000);
+    }
+
+    setInterval(createHeart, 300);
   </script>
 </body>
 </html>
